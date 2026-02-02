@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Travel Management</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root{
+  --primary:#2563eb;
+  --dark:#0f172a;
+}
+
+*{box-sizing:border-box;font-family:Inter,Arial,sans-serif;}
+
+body{
+  margin:0;
+  min-height:100vh;
+  background:url("images/travel1.jpg") center/cover no-repeat;
+}
+
+.overlay{
+  min-height:100vh;
+  background:linear-gradient(
+    to right,
+    rgba(15,23,42,0.85),
+    rgba(15,23,42,0.55)
+  );
+  display:flex;
+  align-items:center;
+  padding:80px;
+}
+
+.hero{
+  max-width:600px;
+  color:white;
+}
+
+.hero h1{
+  font-size:56px;
+  line-height:1.1;
+}
+
+.hero p{
+  margin:24px 0;
+  font-size:18px;
+  opacity:0.9;
+}
+
+.hero button{
+  padding:16px 44px;
+  border:none;
+  border-radius:30px;
+  font-size:18px;
+  background:var(--primary);
+  color:white;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+<div class="overlay">
+  <div class="hero">
+    <h1>Smart Travel<br>Management System</h1>
+    <p>Book tickets, manage trips, and explore destinations with a modern travel platform.</p>
+    <button onclick="location.href='dashboard.html'">Get Started</button>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Local Food | Travel Management System</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root{
+  --primary:#4f46e5;
+  --bg:#f4f6fb;
+  --card:#ffffff;
+  --text:#1f2937;
+  --muted:#6b7280;
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:"Segoe UI", system-ui, Arial, sans-serif;
+}
+
+body{
+  min-height:100vh;
+  background:var(--bg);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+/* MAIN CARD */
+.app{
+  width:800px;
+  background:var(--card);
+  border-radius:26px;
+  box-shadow:0 30px 60px rgba(0,0,0,0.14);
+  padding:40px;
+  text-align:center;
+}
+
+/* HEADER */
+.header{
+  margin-bottom:30px;
+}
+
+.header h2{
+  font-size:26px;
+  margin-bottom:6px;
+}
+
+.header p{
+  font-size:14px;
+  color:var(--muted);
+}
+
+/* LOCATION INPUT */
+.location-box{
+  display:flex;
+  gap:12px;
+  justify-content:center;
+  margin-bottom:26px;
+}
+
+.location-box input{
+  width:60%;
+  padding:14px 16px;
+  border-radius:14px;
+  border:1px solid #e5e7eb;
+  font-size:15px;
+}
+
+/* BUTTON */
+.btn{
+  padding:14px 26px;
+  border:none;
+  border-radius:14px;
+  background:var(--primary);
+  color:white;
+  font-size:15px;
+  cursor:pointer;
+}
+.btn:hover{opacity:0.9}
+
+/* FOOD SECTION */
+.food-section{
+  display:none;
+  margin-top:30px;
+  text-align:left;
+}
+
+.food-section h3{
+  font-size:20px;
+  margin-bottom:16px;
+}
+
+/* FOOD LIST */
+.food-list{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:18px;
+}
+
+.food-card{
+  background:#f9fafb;
+  padding:18px;
+  border-radius:18px;
+}
+
+.food-card h4{
+  font-size:16px;
+  margin-bottom:6px;
+}
+
+.food-card p{
+  font-size:14px;
+  color:var(--muted);
+  margin-bottom:8px;
+}
+
+.price{
+  font-size:14px;
+  font-weight:600;
+  color:#16a34a;
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <!-- HEADER -->
+  <div class="header">
+    <h2>Local Food Guide</h2>
+    <p>Discover authentic local cuisine at your destination</p>
+  </div>
+
+  <!-- LOCATION INPUT -->
+  <div class="location-box">
+    <input type="text" id="location" placeholder="Enter destination (e.g., Hyderabad)">
+    <button class="btn" onclick="loadFood()">View Local Food</button>
+  </div>
+
+  <!-- FOOD LIST COMPONENT -->
+  <div class="food-section" id="foodSection">
+    <h3>Popular Local Foods in <span id="cityName"></span></h3>
+    <div class="food-list" id="foodList"></div>
+  </div>
+
+</div>
+
+<script>
+const foodData = {
+  Hyderabad:[
+    {name:"Hyderabadi Biryani",desc:"Aromatic rice dish with spices and meat",price:"₹250"},
+    {name:"Haleem",desc:"Slow-cooked meat and lentil delicacy"},
+    {name:"Irani Chai",desc:"Traditional tea with Osmania biscuit",price:"₹40"}
+  ],
+  Delhi:[
+    {name:"Chole Bhature",desc:"Spicy chickpeas with fried bread",price:"₹120"},
+    {name:"Butter Chicken",desc:"Creamy tomato-based chicken curry"},
+    {name:"Paratha",desc:"Stuffed flatbread from Old Delhi"}
+  ],
+  Mumbai:[
+    {name:"Vada Pav",desc:"Mumbai’s iconic street food",price:"₹30"},
+    {name:"Pav Bhaji",desc:"Spicy vegetable curry with bread",price:"₹150"},
+    {name:"Bhel Puri",desc:"Tangy puffed rice snack"}
+  ]
+};
+
+function loadFood(){
+  const city=document.getElementById("location").value.trim();
+  if(!city){
+    alert("Please enter a destination");
+    return;
+  }
+
+  document.getElementById("cityName").innerText = city;
+  const list=document.getElementById("foodList");
+  list.innerHTML="";
+
+  const foods = foodData[city] || [
+    {name:"Local Special Dish",desc:"Popular regional food"},
+    {name:"Street Food",desc:"Famous local snack",price:"₹80"},
+    {name:"Traditional Sweet",desc:"Regional dessert"}
+  ];
+
+  foods.forEach(food=>{
+    list.innerHTML += `
+      <div class="food-card">
+        <h4>${food.name}</h4>
+        <p>${food.desc}</p>
+        ${food.price ? `<div class="price">${food.price}</div>` : ``}
+      </div>
+    `;
+  });
+
+  document.getElementById("foodSection").style.display="block";
+}
+</script>
+
+</body>
+</html>
