@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Travel Management</title>
+
+<style>
+:root{
+  --primary:#5b5fe9;
+  --primary-dark:#4a4fd6;
+  --pink:#ff5fa2;
+  --shadow:0 1px 2px rgba(0,0,0,.15),0 4px 12px rgba(0,0,0,.12);
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Segoe UI', sans-serif;
+}
+
+body{
+  height:100vh;
+  background:url("Images/travel1.jpg") center/cover no-repeat;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  position:relative;
+}
+
+body::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,0.35);
+}
+
+.hero-card{
+  width:85%;
+  height:85%;
+  background:rgba(255,255,255,0.35);
+  border-radius:30px;
+  padding:30px 50px;
+  backdrop-filter:blur(12px);
+  box-shadow:0 20px 40px rgba(0,0,0,0.25);
+  display:flex;
+  flex-direction:column;
+}
+
+.navbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.logo{
+  font-size:22px;
+  font-weight:700;
+  color:#fff;
+}
+
+.nav-right{
+  display:flex;
+  align-items:center;
+  gap:25px;
+}
+
+.navbar ul{
+  list-style:none;
+  display:flex;
+  gap:25px;
+  font-size:14px;
+}
+
+.navbar ul li{
+  cursor:pointer;
+  color:#fff;
+  opacity:0.9;
+}
+
+/* PROFILE */
+.profile-btn{
+  background:none;
+  border:none;
+  cursor:pointer;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  transition:0.25s ease;
+}
+
+.profile-btn img{
+  width:44px;
+  height:44px;
+  border-radius:50%;
+  border:2px solid var(--primary);
+}
+
+.profile-btn span{
+  font-size:12px;
+  margin-top:4px;
+  color:#fff;
+}
+
+.profile-btn:hover{
+  transform:translateY(-6px);
+}
+
+/* CONTENT */
+.content{
+  gap:90px;
+  flex:1;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.left{
+  width:50%;
+}
+
+.left h1{
+  font-size:44px;
+  color:#fff;
+}
+
+.left p{
+  margin-top:15px;
+  color:#f1f1f1;
+}
+
+/* SEARCH BAR */
+.search-box{
+  margin-top:30px;
+  background:#fff;
+  padding:14px 18px;
+  border-radius:999px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  width:520px;
+  box-shadow:var(--shadow);
+}
+
+.pin{
+  color:var(--pink);
+  font-size:18px;
+}
+
+.search-wrapper{
+  position:relative;
+  flex:1;
+}
+
+.search-box input{
+  border:none;
+  outline:none;
+  flex:1;
+  font-size:15px;
+  width:100%;
+}
+
+.search-box button{
+  background:var(--primary);
+  color:white;
+  border:none;
+  padding:10px 26px;
+  border-radius:999px;
+  cursor:pointer;
+}
+
+.right img{
+  width:90%;
+}
+
+/* DROPDOWN */
+.suggestions{
+  position:absolute;
+  top:110%;
+  left:0;
+  width:100%;
+  background:white;
+  border-radius:20px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.2);
+  max-height:220px;
+  overflow-y:auto;
+  z-index:999;
+}
+
+.suggestion-item{
+  padding:12px 18px;
+  cursor:pointer;
+  border-bottom:1px solid #eee;
+}
+
+.suggestion-item:hover{
+  background:#f3f4ff;
+}
+
+.place{
+  font-weight:600;
+  font-size:14px;
+}
+
+.state{
+  font-size:12px;
+  color:#666;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="hero-card">
+
+  <div class="navbar">
+    <div class="logo">~ Travel Management</div>
+
+    <div class="nav-right">
+      <ul>
+        <li>Home</li>
+        <li>Destinations</li>
+        <li>About</li>
+        <li>Contact</li>
+      </ul>
+
+      <button class="profile-btn">
+        <img src="Images/profile.jpg">
+        <span>Profile</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="left">
+      <h1><i>Explore Beautiful</i><br>INDIA</h1>
+      <p>Plan trips, track expenses and explore India 🇮🇳</p>
+
+      <div class="search-box">
+        <span class="pin">📍</span>
+
+        <div class="search-wrapper">
+          <input id="fromLocation" placeholder="From location" autocomplete="off">
+          <div id="suggestions" class="suggestions"></div>
+        </div>
+
+        <button onclick="goDestination()">Get Started</button>
+      </div>
+    </div>
+
+    <div class="right">
+      <img src="Images/travel12.jpg">
+    </div>
+  </div>
+
+</div>
+
+<script>
+
+/* ==========================
+   FULL 29 STATES LIST
+========================== */
+const statesList = [
+"Andhra Pradesh","Arunachal Pradesh","Assam","Bihar","Chhattisgarh",
+"Goa","Gujarat","Haryana","Himachal Pradesh","Jharkhand",
+"Karnataka","Kerala","Madhya Pradesh","Maharashtra","Manipur",
+"Meghalaya","Mizoram","Nagaland","Odisha","Punjab",
+"Rajasthan","Sikkim","Tamil Nadu","Telangana","Tripura",
+"Uttar Pradesh","Uttarakhand","West Bengal"
+];
+
+/* Sample District + Places */
+const indiaData = [
+{state:"Andhra Pradesh", district:"Krishna", place:"Vijayawada"},
+{state:"Telangana", district:"Hyderabad", place:"Hyderabad"},
+{state:"Karnataka", district:"Bengaluru Urban", place:"Bengaluru"},
+{state:"Tamil Nadu", district:"Chennai", place:"Chennai"},
+{state:"Maharashtra", district:"Mumbai", place:"Mumbai"}
+];
+
+const locationInput = document.getElementById("fromLocation");
+const suggestionBox = document.getElementById("suggestions");
+
+locationInput.addEventListener("input", function(){
+
+  const value = this.value.toLowerCase();
+  suggestionBox.innerHTML="";
+  if(!value) return;
+
+  /* Match Places */
+  indiaData.filter(item =>
+    item.place.toLowerCase().includes(value)
+  ).forEach(item=>{
+    const div=document.createElement("div");
+    div.className="suggestion-item";
+    div.innerHTML=`
+      <div class="place">${item.place}</div>
+      <div class="state">${item.district}, ${item.state}</div>
+    `;
+    div.onclick=()=>{
+      locationInput.value=item.place;
+      suggestionBox.innerHTML="";
+    };
+    suggestionBox.appendChild(div);
+  });
+
+  /* Match States */
+  statesList.filter(state =>
+    state.toLowerCase().includes(value)
+  ).forEach(state=>{
+    const div=document.createElement("div");
+    div.className="suggestion-item";
+    div.innerHTML=`
+      <div class="place">${state}</div>
+      <div class="state">State - India</div>
+    `;
+    div.onclick=()=>{
+      locationInput.value=state;
+      suggestionBox.innerHTML="";
+    };
+    suggestionBox.appendChild(div);
+  });
+
+});
+
+document.addEventListener("click",function(e){
+  if(!e.target.closest(".search-wrapper")){
+    suggestionBox.innerHTML="";
+  }
+});
+
+function goDestination(){
+  if(!locationInput.value.trim()){
+    alert("Please enter from location");
+    return;
+  }
+  window.location.href="destination.html";
+}
+
+</script>
+
+</body>
+</html>

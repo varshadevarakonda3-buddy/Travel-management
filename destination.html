@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Destination</title>
+
+<style>
+:root{
+  --primary:#5b5fe9;
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Segoe UI', sans-serif;
+}
+
+body{
+  height:100vh;
+  background:url("Images/travel1.jpg") center/cover no-repeat;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  position:relative;
+}
+
+body::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,0.35);
+}
+
+/* GLASS */
+.app-container{
+  width:85%;
+  height:85%;
+  background:rgba(255,255,255,0.35);
+  backdrop-filter:blur(14px);
+  border-radius:30px;
+  box-shadow:0 20px 40px rgba(0,0,0,0.25);
+  display:flex;
+  flex-direction:column;
+  padding:30px 40px;
+  position:relative;
+}
+
+/* HEADER */
+.header{
+  color:#fff;
+  margin-bottom:20px;
+}
+
+.header h3{
+  font-size:20px;
+  font-weight:600;
+}
+
+.back-btn{
+  margin-top:6px;
+  font-size:14px;
+  cursor:pointer;
+  opacity:0.9;
+  width:fit-content;
+}
+
+/* CONTENT */
+.app-content{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+}
+
+/* SEARCH BAR */
+.search-bar{
+  position:relative;
+  background:white;
+  padding:14px 18px;
+  border-radius:999px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  width:500px;
+  box-shadow:0 6px 16px rgba(0,0,0,0.15);
+  transition:0.6s ease;
+}
+
+.pin{
+  font-size:18px;
+  color:var(--primary);
+}
+
+.search-bar input{
+  border:none;
+  outline:none;
+  flex:1;
+  font-size:14px;
+}
+
+.search-bar button{
+  background:var(--primary);
+  color:white;
+  border:none;
+  padding:10px 26px;
+  border-radius:22px;
+  cursor:pointer;
+}
+
+/* AUTOCOMPLETE */
+.autocomplete-box{
+  position:absolute;
+  top:60px;
+  left:0;
+  width:100%;
+  background:white;
+  border-radius:14px;
+  box-shadow:0 8px 20px rgba(0,0,0,0.15);
+  max-height:200px;
+  overflow-y:auto;
+  display:none;
+  z-index:999;
+}
+
+.autocomplete-item{
+  padding:10px 14px;
+  cursor:pointer;
+  font-size:14px;
+}
+
+.autocomplete-item:hover{
+  background:#f3f4f6;
+}
+
+.autocomplete-item span{
+  display:block;
+  font-size:12px;
+  color:#6b7280;
+}
+
+/* ICON ROW */
+.icon-row{
+  margin-top:40px;
+  display:none;
+  gap:26px;
+  justify-content:center;
+  align-items:center;
+  flex-wrap:wrap;
+}
+
+.icon-item{
+  text-align:center;
+  cursor:pointer;
+  transition:0.25s;
+}
+
+.icon-item:hover{
+  transform:translateY(-6px);
+}
+
+.circle{
+  width:62px;
+  height:62px;
+  background:white;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 8px 18px rgba(0,0,0,0.2);
+}
+
+.circle span{
+  font-size:26px;
+}
+
+.icon-item p{
+  margin-top:6px;
+  font-size:12px;
+  color:#fff;
+}
+</style>
+</head>
+
+<body>
+
+<div class="app-container">
+
+  <div class="header">
+    <h3>Travel Management</h3>
+    <div class="back-btn" onclick="goBack()">← Back</div>
+  </div>
+
+  <div class="app-content">
+
+    <!-- SEARCH -->
+    <div class="search-bar">
+      <span class="pin">📍</span>
+      <input id="destinationInput"
+             placeholder="Enter Destination"
+             onkeyup="searchPlaces(this.value)">
+      <button onclick="searchDestination()">Search</button>
+
+      <div id="autocomplete" class="autocomplete-box"></div>
+    </div>
+
+    <!-- ICONS -->
+    <div class="icon-row" id="iconRow">
+
+      <div class="icon-item">
+        <div class="circle"><span>🚆</span></div>
+        <p>Train</p>
+      </div>
+
+      <div class="icon-item">
+        <div class="circle"><span>🚌</span></div>
+        <p>Bus</p>
+      </div>
+
+      <div class="icon-item">
+        <div class="circle"><span>✈️</span></div>
+        <p>Flight</p>
+      </div>
+
+      <div class="icon-item">
+        <div class="circle"><span>🏨</span></div>
+        <p>Hotels</p>
+      </div>
+
+      <!-- ✅ LOCAL ATTRACTIONS ADDED -->
+      <div class="icon-item" onclick="window.location.href='local-attractions.html'">
+        <div class="circle"><span>🏛️</span></div>
+        <p>Local Attractions</p>
+      </div>
+
+      <div class="icon-item">
+        <div class="circle"><span>🍽</span></div>
+        <p>Food</p>
+      </div>
+
+      <div class="icon-item">
+        <div class="circle"><span>🚕</span></div>
+        <p>Local Ride</p>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<script>
+
+/* INDIA PLACES */
+const indiaPlaces = [
+  {name:"Vijayawada", state:"Andhra Pradesh"},
+  {name:"Visakhapatnam", state:"Andhra Pradesh"},
+  {name:"Guntur", state:"Andhra Pradesh"},
+  {name:"Hyderabad", state:"Telangana"},
+  {name:"Warangal", state:"Telangana"},
+  {name:"Bangalore", state:"Karnataka"},
+  {name:"Chennai", state:"Tamil Nadu"},
+  {name:"Mumbai", state:"Maharashtra"},
+  {name:"Delhi", state:"Delhi"},
+  {name:"Jaipur", state:"Rajasthan"},
+  {name:"Kolkata", state:"West Bengal"}
+];
+
+function searchPlaces(value){
+  const box = document.getElementById("autocomplete");
+  box.innerHTML="";
+
+  if(value.trim()===""){
+    box.style.display="none";
+    return;
+  }
+
+  const filtered = indiaPlaces.filter(place =>
+    place.name.toLowerCase().startsWith(value.toLowerCase())
+  );
+
+  filtered.forEach(place=>{
+    box.innerHTML += `
+      <div class="autocomplete-item" onclick="selectPlace('${place.name}')">
+        ${place.name}
+        <span>${place.state}</span>
+      </div>
+    `;
+  });
+
+  box.style.display = filtered.length ? "block" : "none";
+}
+
+function selectPlace(name){
+  document.getElementById("destinationInput").value = name;
+  document.getElementById("autocomplete").style.display="none";
+}
+
+function searchDestination(){
+  const dest = document.getElementById("destinationInput").value.trim();
+  if(!dest){
+    alert("Please enter destination");
+    return;
+  }
+
+  document.getElementById("autocomplete").style.display="none";
+  document.getElementById("iconRow").style.display="flex";
+}
+
+function goBack(){
+  window.location.href="welcome.html";
+}
+
+</script>
+
+</body>
+</html>

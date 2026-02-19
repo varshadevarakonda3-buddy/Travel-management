@@ -3,69 +3,415 @@
 <head>
 <meta charset="UTF-8">
 <title>Travel Management</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 :root{
-  --primary:#2563eb;
-  --dark:#0f172a;
+  --primary:#5b5fe9;
+  --primary-dark:#4a4fd6;
+  --pink:#ff5fa2;
+  --shadow:0 1px 2px rgba(0,0,0,.15),0 4px 12px rgba(0,0,0,.12);
 }
 
-*{box-sizing:border-box;font-family:Inter,Arial,sans-serif;}
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Segoe UI', sans-serif;
+}
 
 body{
-  margin:0;
-  min-height:100vh;
-  background:url("images/travel1.jpg") center/cover no-repeat;
+  height:100vh;
+  background:url("Images/travel1.jpg") center/cover no-repeat;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  position:relative;
 }
 
-.overlay{
-  min-height:100vh;
-  background:linear-gradient(
-    to right,
-    rgba(15,23,42,0.85),
-    rgba(15,23,42,0.55)
-  );
+body::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,0.35);
+}
+
+/* MAIN CARD */
+.hero-card{
+  width:85%;
+  height:85%;
+  background:rgba(255,255,255,0.35);
+  border-radius:30px;
+  padding:30px 50px;
+  backdrop-filter:blur(12px);
+  box-shadow:0 20px 40px rgba(0,0,0,0.25);
+  display:flex;
+  flex-direction:column;
+}
+
+/* NAVBAR */
+.navbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.logo{
+  font-size:22px;
+  font-weight:700;
+  color:#fff;
+}
+
+.nav-right{
   display:flex;
   align-items:center;
-  padding:80px;
+  gap:25px;
 }
 
-.hero{
-  max-width:600px;
-  color:white;
+.navbar ul{
+  list-style:none;
+  display:flex;
+  gap:25px;
+  font-size:14px;
 }
 
-.hero h1{
-  font-size:56px;
-  line-height:1.1;
+.navbar ul li{
+  cursor:pointer;
+  color:#fff;
 }
 
-.hero p{
-  margin:24px 0;
-  font-size:18px;
-  opacity:0.9;
-}
-
-.hero button{
-  padding:16px 44px;
+/* PROFILE */
+.profile-btn{
+  background:none;
   border:none;
-  border-radius:30px;
+  cursor:pointer;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  transition:0.25s ease;
+}
+
+.profile-btn img{
+  width:44px;
+  height:44px;
+  border-radius:50%;
+  border:2px solid var(--primary);
+  transition:0.25s ease;
+}
+
+.profile-btn span{
+  font-size:12px;
+  margin-top:4px;
+  color:#fff;
+}
+
+.profile-btn:hover{
+  transform:translateY(-6px);
+}
+
+.profile-btn:hover img{
+  box-shadow:0 8px 18px rgba(0,0,0,0.25);
+}
+
+/* CONTENT */
+.content{
+  gap:90px;
+  flex:1;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.left{
+  width:50%;
+}
+
+.left h1{
+  font-size:44px;
+  color:#fff;
+}
+
+.left p{
+  margin-top:15px;
+  color:#f1f1f1;
+}
+
+/* SEARCH BAR */
+.search-box{
+  margin-top:30px;
+  background:#fff;
+  padding:14px 18px;
+  border-radius:999px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  width:520px;
+  box-shadow:var(--shadow);
+  position:relative;
+}
+
+.pin{
+  color:var(--pink);
   font-size:18px;
+}
+
+.search-box input{
+  border:none;
+  outline:none;
+  flex:1;
+  font-size:15px;
+}
+
+.search-box button{
   background:var(--primary);
   color:white;
+  border:none;
+  padding:10px 26px;
+  border-radius:999px;
   cursor:pointer;
 }
+
+/* AUTOCOMPLETE */
+.autocomplete-box{
+  position:absolute;
+  top:60px;
+  left:0;
+  background:white;
+  width:100%;
+  max-height:200px;
+  overflow-y:auto;
+  border-radius:14px;
+  box-shadow:0 8px 20px rgba(0,0,0,0.15);
+  display:none;
+  z-index:999;
+}
+
+.autocomplete-item{
+  padding:10px 14px;
+  cursor:pointer;
+  font-size:14px;
+}
+
+.autocomplete-item:hover{
+  background:#f3f4f6;
+}
+
+.autocomplete-item span{
+  display:block;
+  font-size:12px;
+  color:#6b7280;
+}
+
+.right img{
+  width:90%;
+}
+
+/* POPUP */
+.popup-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.6);
+  display:none;
+  justify-content:center;
+  align-items:center;
+  z-index:100;
+}
+
+.popup{
+  width:360px;
+  background:#fff;
+  padding:30px;
+  border-radius:22px;
+  position:relative;
+}
+
+.popup h2{
+  text-align:center;
+  margin-bottom:20px;
+  color:var(--primary);
+}
+
+.popup input{
+  width:100%;
+  padding:14px 18px;
+  border-radius:999px;
+  border:none;
+  margin-bottom:14px;
+  box-shadow:var(--shadow);
+}
+
+.popup button{
+  width:100%;
+  padding:12px;
+  background:var(--primary);
+  color:white;
+  border:none;
+  border-radius:999px;
+  cursor:pointer;
+}
+
+.popup-link{
+  font-size:13px;
+  text-align:center;
+  margin-top:8px;
+  color:var(--primary);
+  cursor:pointer;
+}
+
+.popup-back{
+  position:absolute;
+  top:14px;
+  left:16px;
+  font-size:20px;
+  cursor:pointer;
+  color:var(--primary);
+}
+
+.hidden{ display:none; }
 </style>
 </head>
 
 <body>
-<div class="overlay">
-  <div class="hero">
-    <h1>Smart Travel<br>Management System</h1>
-    <p>Book tickets, manage trips, and explore destinations with a modern travel platform.</p>
-    <button onclick="location.href='dashboard.html'">Get Started</button>
+
+<div class="hero-card">
+
+  <div class="navbar">
+    <div class="logo">~ Travel Management</div>
+
+    <div class="nav-right">
+      <ul>
+        <li>Home</li>
+        <li>Destinations</li>
+        <li>About</li>
+        <li>Contact</li>
+      </ul>
+
+      <button class="profile-btn" onclick="openPopup()">
+        <img src="Images/profile.jpg" alt="Profile">
+        <span>Profile</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="left">
+      <h1>Explore Beautiful<br>INDIA</h1>
+      <p>Plan trips, track expenses and explore India 🇮🇳</p>
+
+      <div class="search-box">
+        <span class="pin">📍</span>
+        <input id="fromLocation" placeholder="From location" onkeyup="searchPlaces(this.value)">
+        <button onclick="goDestination()">Get Started</button>
+
+        <div id="autocomplete" class="autocomplete-box"></div>
+      </div>
+    </div>
+
+    <div class="right">
+      <img src="Images/travel12.jpg">
+    </div>
+  </div>
+
+</div>
+
+<!-- LOGIN / SIGNUP / FORGOT -->
+<div class="popup-overlay" id="popup">
+  <div class="popup">
+
+    <div id="loginBox">
+      <div class="popup-back" onclick="closePopup()">&lt;</div>
+      <h2>Login</h2>
+      <input placeholder="Email / Username">
+      <input type="password" placeholder="Password">
+      <button>Login</button>
+      <div class="popup-link" onclick="showForgot()">Forgot Password?</div>
+      <div class="popup-link" onclick="showSignup()">Don’t have an account? Sign Up</div>
+    </div>
+
+    <div id="signupBox" class="hidden">
+      <div class="popup-back" onclick="showLogin()">&lt;</div>
+      <h2>Sign Up</h2>
+      <input placeholder="Username">
+      <input placeholder="Email">
+      <input placeholder="Phone Number">
+      <input type="password" placeholder="Password">
+      <button onclick="signupSuccess()">Create Account</button>
+    </div>
+
+    <div id="forgotBox" class="hidden">
+      <div class="popup-back" onclick="showSignup()">&lt;</div>
+      <h2>Forgot Password</h2>
+      <input placeholder="Registered Email">
+      <input placeholder="Registered Phone Number">
+      <button>Reset Password</button>
+    </div>
+
   </div>
 </div>
+
+<script>
+
+/* AUTOCOMPLETE DATA */
+const indiaPlaces = [
+  {name:"Vijayawada", state:"Andhra Pradesh"},
+  {name:"Visakhapatnam", state:"Andhra Pradesh"},
+  {name:"Guntur", state:"Andhra Pradesh"},
+  {name:"Hyderabad", state:"Telangana"},
+  {name:"Warangal", state:"Telangana"},
+  {name:"Bangalore", state:"Karnataka"},
+  {name:"Vijaypur", state:"Karnataka"},
+  {name:"Chennai", state:"Tamil Nadu"},
+  {name:"Mumbai", state:"Maharashtra"},
+  {name:"Delhi", state:"Delhi"},
+  {name:"Jaipur", state:"Rajasthan"},
+  {name:"Kolkata", state:"West Bengal"}
+];
+
+function searchPlaces(value){
+  const box = document.getElementById("autocomplete");
+  box.innerHTML="";
+  
+  if(value.trim()===""){
+    box.style.display="none";
+    return;
+  }
+
+  const filtered = indiaPlaces.filter(place =>
+    place.name.toLowerCase().startsWith(value.toLowerCase())
+  );
+
+  filtered.forEach(place=>{
+    box.innerHTML += `
+      <div class="autocomplete-item" onclick="selectPlace('${place.name}')">
+        ${place.name}
+        <span>${place.state}</span>
+      </div>
+    `;
+  });
+
+  box.style.display = filtered.length ? "block" : "none";
+}
+
+function selectPlace(name){
+  document.getElementById("fromLocation").value = name;
+  document.getElementById("autocomplete").style.display="none";
+}
+
+/* EXISTING FUNCTIONS */
+function openPopup(){ popup.style.display="flex"; showLogin(); }
+function closePopup(){ popup.style.display="none"; }
+function showLogin(){ loginBox.style.display="block"; signupBox.style.display="none"; forgotBox.style.display="none"; }
+function showSignup(){ loginBox.style.display="none"; signupBox.style.display="block"; forgotBox.style.display="none"; }
+function showForgot(){ loginBox.style.display="none"; signupBox.style.display="none"; forgotBox.style.display="block"; }
+function signupSuccess(){ alert("Account created successfully!"); closePopup(); }
+function goDestination(){
+  if(!fromLocation.value.trim()){
+    alert("Please enter from location");
+    return;
+  }
+  window.location.href="destination.html";
+}
+
+</script>
+
 </body>
 </html>
